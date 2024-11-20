@@ -10,7 +10,7 @@ on:
              - PROD_EU
              - UAT_EU
         dbName:
-          description: "Slecet the db to take the dump."
+          description: "Select the db to take the dump."
           type: choice
           required: true
           options:
