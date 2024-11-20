@@ -7,8 +7,8 @@ on:
           type: choice
           required: true
           options:
-             - PROD
-             - UAT
+             - PROD_EU
+             - UAT_EU
         dbName:
           description: "Slecet the db to take the dump."
           type: choice
