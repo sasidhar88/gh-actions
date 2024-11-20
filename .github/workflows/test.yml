@@ -7,8 +7,8 @@ on:
           type: choice
           required: true
           options:
-             - production-eu
-             - uat-eu
+             - PROD
+             - UAT
         dbName:
           description: "Slecet the db to take the dump."
           type: choice
@@ -23,5 +23,5 @@ jobs:
     steps:
       - name: Taking the dump
         run: |
-             echo "Hello world"
+             echo ${{ secrets[format('MONGO_USER_{0}', input.cluster)] }}
             
