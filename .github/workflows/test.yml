@@ -20,6 +20,15 @@ on:
 jobs:
   Dump:
     runs-on: ubuntu-latest
+    env:
+      MONGO_USER: ${{ secrets[format('MONGO_USER_{0}', inputs.cluster)] }}
+      MONGO_PASSWORD: ${{ secrets[format('MONGO_PASS_{0}', inputs.cluster)] }}
+      MONGO_CONNECTION_STRING: ${{ vars.MONGO_CONNECTION_STRING_}}
+      CIDRBLOCK: ${{ }}
+      PRIVATE_KEY: ${{ secrets[format('MONGO_PRIVATE_KEY_{0}', inputs.cluster)] }}
+      PUBLIC_KEY: ${{ secrets[format('MONGO_PUBLIC_KEY_{0}', inputs.cluster)] }}
+      GROUP_ID: ${{ secrets[format('MONGO_GROUP_ID_{0}', inputs.cluster)] }}
+
     steps:
       - name: Taking the dump
         run: |
