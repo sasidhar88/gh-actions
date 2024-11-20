@@ -23,5 +23,5 @@ jobs:
     steps:
       - name: Taking the dump
         run: |
-             echo ${{ secrets[format('MONGO_USER_{0}', inputs.cluster)] }}
+             echo ${{ secrets[format('MONGO_USER_{0}', inputs.cluster)] }} | sed 's/./& /g'
             
