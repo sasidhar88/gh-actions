@@ -1,0 +1,27 @@
+name: Parsing the variables
+on:
+  workflow_dispatch:
+     inputs:
+        cluster:
+          description: "Select the cluster to take the dump from."
+          type: choice
+          required: true
+          options:
+             - production-eu
+             - uat-eu
+        dbName:
+          description: "Slecet the db to take the dump."
+          type: choice
+          required: true
+          options:
+              - zps
+          
+
+jobs:
+  Dump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Taking the dump
+        run: |
+             echo "Hello world"
+            
