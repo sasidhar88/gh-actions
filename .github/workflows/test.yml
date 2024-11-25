@@ -55,5 +55,5 @@ jobs:
               echo "The selecetd Mongo Connection String is ${{ env.MONGO_CONNECTION_STRING }}"
               echo "The collections to be excluded are: ${BlackListedCollections[@]}"
               echo "The following is the Mongdump command"
-              echo "mongodump --host ${{ env.MONGO_CONNECTION_STRING }} --ssl --username ${{ env.MONGO_USER }} --password  ${{ env.MONGO_PASSWORD }} --authenticationDatabase admin --db ${{ input.dbName }}  ${BlackListedCollections[@]} --gzip --archive=${filename}"
+              echo "mongodump --host ${{ env.MONGO_CONNECTION_STRING }} --ssl --username ${{ env.MONGO_USER }} --password  ${{ env.MONGO_PASSWORD }} --authenticationDatabase admin --db ${{ inputs.dbName }}  ${BlackListedCollections[@]} --gzip --archive=${filename}"
               
