@@ -48,7 +48,7 @@ jobs:
                 BlackListedCollections+=("${collectionName}")
                 done
             }
-              
+            collectionArray
               echo "Printing the parameters"
               echo "The selected cluster for dump is ${{ inputs.cluster }} and db to be dumped is ${{ inputs.dbName }}"
               echo "############################################################################################"
