@@ -23,14 +23,37 @@ jobs:
     env:
       MONGO_USER: ${{ secrets[format('MONGO_USER_{0}', inputs.cluster)] }}
       MONGO_PASSWORD: ${{ secrets[format('MONGO_PASS_{0}', inputs.cluster)] }}
-      MONGO_CONNECTION_STRING: ${{ vars.MONGO_CONNECTION_STRING_}}
-      CIDRBLOCK: ${{ }}
-      PRIVATE_KEY: ${{ secrets[format('MONGO_PRIVATE_KEY_{0}', inputs.cluster)] }}
-      PUBLIC_KEY: ${{ secrets[format('MONGO_PUBLIC_KEY_{0}', inputs.cluster)] }}
-      GROUP_ID: ${{ secrets[format('MONGO_GROUP_ID_{0}', inputs.cluster)] }}
+      MONGO_CONNECTION_STRING: ${{ vars[format('MONGO_CONNECTION_STRING_{0}', inputs.cluster)]}}
+      #CIDRBLOCK: ${{ }}
+      #PRIVATE_KEY: ${{ secrets[format('MONGO_PRIVATE_KEY_{0}', inputs.cluster)] }}
+      #PUBLIC_KEY: ${{ secrets[format('MONGO_PUBLIC_KEY_{0}', inputs.cluster)] }}
+      #GROUP_ID: ${{ secrets[format('MONGO_GROUP_ID_{0}', inputs.cluster)] }}
 
     steps:
       - name: Taking the dump
         run: |
-             echo ${{ secrets[format('MONGO_USER_{0}', inputs.cluster)] }} | sed 's/./& /g'
-            
+            #echo ${{ secrets[format('MONGO_USER_{0}', inputs.cluster)] }} | sed 's/./& /g'
+
+              #: Collections to be skipped
+            collectionsToExclude=("audit-logs" "common_offset" "common_messages" "common_events" "users" "tasks")
+
+            #: Declaring an array for Black Listed COllections
+            declare -a BlackListedCollections
+            #: Collection array function
+            collectionArray () {
+                #: formating the collections to be skipped.
+                for collection in "${collectionsToExclude[@]}"
+                do
+                collectionName=" --excludeCollection=${collection}"
+                BlackListedCollections+=("${collectionName}")
+                done
+            }
+              
+              echo "Printing the parameters"
+              echo "The selected cluster for dump is ${{ inputs.cluster }} and db to be dumped is ${{ inputs.dbName }}"
+              echo "############################################################################################"
+              echo "The selecetd Mongo Connection String is ${{ env.MONGO_CONNECTION_STRING }}"
+              echo "The collections to be excluded are: ${BlackListedCollections[@]}"
+              echo "The following is the Mongdump command"
+              echo "mongodump --host ${{ env.MONGO_CONNECTION_STRING }} --ssl --username ${{ env.MONGO_USER }} --password  ${{ env.MONGO_PASSWORD }} --authenticationDatabase admin --db ${{ input.dbName }}  ${BlackListedCollections[@]} --gzip --archive=${filename}"
+              
