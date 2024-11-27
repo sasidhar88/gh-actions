@@ -41,8 +41,8 @@ echo "${natgw}"
 #: Proceesing the cidr block and natgw id
 processingCidrBlock () {
     #: processing the cidr block and natgw.
-    declare -g cidrblock=$(echo "${!cidrblock}" | sed 's/%2F/\//g')
-    declare -g natgw=$(echo "${!natgw}" | sed 's/%2F/\//g')
+    declare -g cidrblock=$(echo "${cidrblock}" | sed 's/%2F/\//g')
+    declare -g natgw=$(echo "${natgw}" | sed 's/%2F/\//g')
 }
 
 processingCidrBlock
