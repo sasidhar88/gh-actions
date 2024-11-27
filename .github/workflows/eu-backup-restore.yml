@@ -10,6 +10,7 @@ on:
        description: "Please slecte the db to be restored"
        required: true
        type: choice
+       options:
         - zps
 
 jobs:
