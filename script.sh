@@ -31,9 +31,9 @@ setValues () {
     declare -g natgw=$NATGW
     declare -g groupid=$GROUP_ID
     #: Defing source mongodb connection string
-    declare -g source_prod_url=$MONGO_CONNECTION_STRING_PROD_EU
-    declare -g mongodb_prod_user=$MONGO_USER_PROD_EU
-    declare -g mongodb_prod_pass=$MONGO_PASS_PROD_EU
+    #declare -g source_prod_url=$MONGO_CONNECTION_STRING_PROD_EU
+    #declare -g mongodb_prod_user=$MONGO_USER_PROD_EU
+    #declare -g mongodb_prod_pass=$MONGO_PASS_PROD_EU
 }
 setValues
 
