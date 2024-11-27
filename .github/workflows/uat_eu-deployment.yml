@@ -8,9 +8,9 @@ on:
         required: true
         type: choice
         options:
-          - uat-eu-api-server
-          - uat-eu-pubsub-server
-          - uat-eu-consumer-server
+          - uat_eu-api-server --> ENV:- UAT_EU, Instance_Name:- UAT EU ZPS API 0, Mode:- API
+          - uat_eu-pubsub-server --> ENV:- UAT_EU, Instance_Name:- UAT EU ZPS Pubsub 0, Mode:- Pubsub
+          - uat_eu-agenda-server --> ENV:- UAT_EU, Instance_Name:- UAT EU ZPS Jobs 0, Mode:- Agenda
       deploy_mode:
         description: 'Select deployment mode'
         required: true
@@ -31,31 +31,27 @@ jobs:
     steps:
       - name: Send Slack Notification
         run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{
-            "channel": "#test-slack-zps",
-            "text": "*ZPS deployment has been triggered on instance: *'"${{ github.event.inputs.instance_name }}"'.\n\n*Triggered by*: *'"${{ github.actor }}"'*\n*Deploy Mode*: *'"${{ github.event.inputs.deploy_mode }}"'*\n*Branch/Tag*: *'"${{ github.event.inputs.branch_or_tag_name }}"'*"
-          }' ${{ secrets.SLACK_WEBHOOK_URL }}
+          # curl -X POST -H 'Content-type: application/json' \
+          # --data '{
+          #   "channel": "#test-slack-zps",
+          #   "text": "*ZPS deployment has been triggered on instance: *'"${{ github.event.inputs.instance_name }}"'.\n\n*Triggered by*: *'"${{ github.actor }}"'*\n*Deploy Mode*: *'"${{ github.event.inputs.deploy_mode }}"'*\n*Branch/Tag*: *'"${{ github.event.inputs.branch_or_tag_name }}"'*"
+          # }' ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Validate Instance
         id: validate-instance
         run: |
           case "${{ github.event.inputs.instance_name }}" in
             uat-eu-api-server)
-              echo "runner=uat_eu-GH-1" >> $GITHUB_ENV
-              echo "::set-output name=runner::uat_eu-GH-1"
+              echo "runner=uat_eu-api-0" >> $GITHUB_ENV
+              echo "::set-output name=runner::uat_eu-api-0"
               ;;
             uat-eu-pubsub-server)
-              echo "runner=uat_eu-GH-2" >> $GITHUB_ENV
-              echo "::set-output name=runner::uat_eu-GH-2"
+              echo "runner=uat_eu-pubsub-0" >> $GITHUB_ENV
+              echo "::set-output name=runner::uat_eu-pubsub-0"
               ;;
             uat-eu-consumer-server)
-              echo "runner=uat_eu-GH-3" >> $GITHUB_ENV
+              echo "runner=uat_eu-pubsub-0" >> $GITHUB_ENV
               echo "::set-output name=runner::uat_eu-GH-3"
-              ;;
-            uat-eu-shared-server)
-              echo "runner=uat_eu-GH-4" >> $GITHUB_ENV
-              echo "::set-output name=runner::uat_eu-GH-4"
               ;;
             *)
               echo "Invalid instance name selected."
