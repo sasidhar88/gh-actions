@@ -9,6 +9,5 @@ array=('MONGO_USER' 'MONGO_PASSWORD' 'MONGO_CONNECTION_STRING' 'CIDRBLOCK' 'PRIV
 
 for item in ${array[@]}
 do
-  echo "Printing the value for the variable: $item"
-  echo $item | sed 's/./& /g'
+  echo "Printing the value for variable: $item"
 done
