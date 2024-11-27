@@ -1,0 +1,46 @@
+name:  Deployment Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      modes:
+        description: 'Select the modes to be deployed'
+        required: true
+        type: choice
+        options:
+          - api
+          - agenda-consumer
+          - data-replication
+          - pubsub-consumer
+      environment:
+        description: 'Select the environment'
+        required: true
+        type: choice
+        options:
+          - uat-eu
+      runner:
+        description: 'Select the runner for deployment'
+        required: true
+        type: choice
+        options:
+          - uat-eu-api-server -> UAT_EU, API Instance, API mode
+          - uat-eu-pubsub-server -> UAT_EU , PubSub Instance, PubSub mode
+          - uat-eu-consumer-server -> UAT_EU, Consumer Instance, Consumer mode
+          - uat-eu-shared-server -> UAT_EU, Shared Instance, Multiple modes
+      deploy_mode:
+        description: 'Select deployment mode'
+        required: true
+        type: choice
+        options:
+          - branch
+          - tag
+      branch_or_tag_name:
+        description: 'Enter the branch name or tag name based on your selection'
+        required: true
+
+jobs:
+  set-runner:
+    runs-on: ubuntu-latest
+    steps:
+     - name: test
+       run: echo "Hello"
