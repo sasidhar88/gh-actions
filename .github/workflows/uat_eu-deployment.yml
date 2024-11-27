@@ -1,0 +1,172 @@
+name: Uat EU ZPS Deployment Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      instance_name:
+        description: 'Select the instance for deployment'
+        required: true
+        type: choice
+        options:
+          - uat-eu-api-server
+          - uat-eu-pubsub-server
+          - uat-eu-consumer-server
+      deploy_mode:
+        description: 'Select deployment mode'
+        required: true
+        type: choice
+        options:
+          - branch
+          - tag
+      branch_or_tag_name:
+        description: 'Enter the branch name or tag name based on your selection'
+        required: true
+
+jobs:
+  set-runner:
+    runs-on: ubuntu-latest
+    outputs:
+      runner: ${{ steps.validate-instance.outputs.runner }}
+      home: ${{ steps.validate-instance.outputs.home }}
+    steps:
+      - name: Send Slack Notification
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{
+            "channel": "#test-slack-zps",
+            "text": "*ZPS deployment has been triggered on instance: *'"${{ github.event.inputs.instance_name }}"'.\n\n*Triggered by*: *'"${{ github.actor }}"'*\n*Deploy Mode*: *'"${{ github.event.inputs.deploy_mode }}"'*\n*Branch/Tag*: *'"${{ github.event.inputs.branch_or_tag_name }}"'*"
+          }' ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Validate Instance
+        id: validate-instance
+        run: |
+          case "${{ github.event.inputs.instance_name }}" in
+            uat-eu-api-server)
+              echo "runner=uat_eu-GH-1" >> $GITHUB_ENV
+              echo "::set-output name=runner::uat_eu-GH-1"
+              ;;
+            uat-eu-pubsub-server)
+              echo "runner=uat_eu-GH-2" >> $GITHUB_ENV
+              echo "::set-output name=runner::uat_eu-GH-2"
+              ;;
+            uat-eu-consumer-server)
+              echo "runner=uat_eu-GH-3" >> $GITHUB_ENV
+              echo "::set-output name=runner::uat_eu-GH-3"
+              ;;
+            uat-eu-shared-server)
+              echo "runner=uat_eu-GH-4" >> $GITHUB_ENV
+              echo "::set-output name=runner::uat_eu-GH-4"
+              ;;
+            *)
+              echo "Invalid instance name selected."
+              exit 1
+              ;;
+          esac
+          echo "home=/home/ubuntu/zos" >> $GITHUB_ENV
+          echo "::set-output name=home::/home/ubuntu/zos"
+          echo "Validation successful for instance: ${{ github.event.inputs.instance_name }}"
+
+      - name: Printing the runner picked
+        run: |
+          echo "Printing the runner picked..."
+          echo "Runner: ${{ steps.validate-instance.outputs.runner }}"
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Trim and Set Branch or Tag Name
+        id: trim-branch-or-tag
+        run: |
+          branchOrTagName="$(echo -n "${{ github.event.inputs.branch_or_tag_name }}" | xargs)"
+          echo "branchOrTagName=${branchOrTagName}" >> $GITHUB_ENV
+          echo "::set-output name=branchOrTagName::${branchOrTagName}"
+
+      - name: Validate Branch or Tag
+        id: validate-branch-or-tag
+        run: |
+          branchOrTagName="${{ steps.trim-branch-or-tag.outputs.branchOrTagName }}"
+          deployMode="${{ github.event.inputs.deploy_mode }}"
+          
+          if [[ "$deployMode" == "branch" ]]; then
+            echo "Validating branch: $branchOrTagName"
+            if git ls-remote --heads origin "$branchOrTagName" | grep -q "$branchOrTagName"; then
+              echo "Branch '$branchOrTagName' exists."
+            else
+              echo "Branch '$branchOrTagName' does not exist."
+              exit 1
+            fi
+          elif [[ "$deployMode" == "tag" ]]; then
+            echo "Validating tag: $branchOrTagName"
+            if git ls-remote --tags origin "$branchOrTagName" | grep -q "$branchOrTagName"; then
+              echo "Tag '$branchOrTagName' exists."
+            else
+              echo "Tag '$branchOrTagName' does not exist."
+              exit 1
+            fi
+          else
+            echo "Invalid deploy mode selected. Only 'branch' or 'tag' are valid."
+            exit 1
+          fi
+
+  app_deployment:
+    needs: set-runner
+    runs-on: ${{ needs.set-runner.outputs.runner }}
+    env:
+      WORKING_DIR: ${{ needs.set-runner.outputs.home }}
+      BRANCH_OR_TAG_NAME: ${{ github.event.inputs.branch_or_tag_name }}
+    steps:
+      - name: Pull latest code and install dependencies
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Uncommitted changes detected. Stashing changes..."
+            git stash
+          else
+            echo "No uncommitted changes."
+          fi
+          git fetch origin
+          # Checkout the provided branch or tag
+          echo "Checking out $BRANCH_OR_TAG_NAME as a ${{ github.event.inputs.deploy_mode }}"
+          git checkout "$BRANCH_OR_TAG_NAME"
+  
+          if [[ "${{ github.event.inputs.deploy_mode }}" == "branch" ]]; then
+            git pull origin "$BRANCH_OR_TAG_NAME"
+          fi
+          npm install
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Deploy the selected mode
+        run: |
+          declare -A modes_map=(
+            [api]="api"
+            [agenda-consumer]="agenda"
+            [data-replication]="data-replication"
+            [pubsub-consumer]="pubsub"
+          )
+          run_script() {
+            local script_name="$1"
+            local script=${modes_map[$script_name]}
+            local service_name="zps-$script"
+            output=$( pm2 ls | grep "$service_name" | grep -qw "online" && echo "1" || echo "0")
+            if [ $output -eq 1 ]; then
+              echo "Service '$service_name' is running. Reloading..."
+              pm2 reload "$service_name"
+            else
+              if [ "$script_name" == "api" ]; then
+                echo "Service not running, starting with 'npm start'"
+                npm start
+              else
+                echo "Service not running, starting with 'npm run $script_name'"
+                npm run "$script_name"
+              fi
+            fi
+          }
+
+          if [[ " ${modes_map[@]} " =~ " ${{ github.event.inputs.modes }} " ]]; then
+            echo "Option selected: ${{ github.event.inputs.modes }}"
+            echo "Running the deployment script for ${{ github.event.inputs.modes }}"
+            run_script "${{ github.event.inputs.modes }}"
+          else
+            echo "Invalid option selected."
+            exit 1
+          fi
+        working-directory: ${{ env.WORKING_DIR }}
