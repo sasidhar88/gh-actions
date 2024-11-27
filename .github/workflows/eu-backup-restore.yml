@@ -6,7 +6,7 @@ on:
      env:
       description: "Please provide the environments to restore: uat-eu, dev-eu"
       required: true
-     dbName:
+     dbNames:
        description: "Please slecte the db to be restored"
        required: true
        type: choice
@@ -28,4 +28,5 @@ jobs:
          bash zps_eu-mongo-backup-restore.sh
        env:
         env: ${{ inputs.env }}
-        dbName: ${{ inputs.dbName }}
+        dbNames: ${{ inputs.dbNames }}
+        collectionsToexclude: ${{ vars.COLLECTIONSTOEXCLUDE }}
