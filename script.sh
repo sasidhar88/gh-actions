@@ -36,7 +36,8 @@ setValues () {
     #declare -g mongodb_prod_pass=$MONGO_PASS_PROD_EU
 }
 setValues
-
+echo "${cidrblock}" 
+echo "${natgw}"
 #: Proceesing the cidr block and natgw id
 processingCidrBlock () {
     #: processing the cidr block and natgw.
