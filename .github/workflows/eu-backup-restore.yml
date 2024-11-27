@@ -29,4 +29,4 @@ jobs:
        env:
         env: ${{ inputs.env }}
         dbNames: ${{ inputs.dbNames }}
-        collectionsToexclude: ${{ vars.COLLECTIONSTOEXCLUDE }}
+        collectionsToExclude: ${{ vars.COLLECTIONSTOEXCLUDE }}
