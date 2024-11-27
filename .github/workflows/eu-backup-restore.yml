@@ -1,0 +1,25 @@
+name: EU ZPS Backup and Restore
+
+on:
+ workflow_dispatch:
+   inputs:
+     env:
+      description: "Please provide the environments to restore: uat-eu, dev-eu"
+      required: true
+     dbNames:
+       description: "Please slecte the db to be restored"
+       required: true
+       type: choice
+        - zps
+
+jobs:
+  Backup_Restore: 
+    runs-on: ubuntu-latest
+    steps:
+     - name: Eu ZPS Backup and Restore
+       run: |
+         echo "Taking the dump from Eu ZPS."
+         bash zps_eu-mongo-backup-restore.sh
+       env:
+        env: ${{ inputs.env }}
+        dbName: ${{ inputs.dbName }}
