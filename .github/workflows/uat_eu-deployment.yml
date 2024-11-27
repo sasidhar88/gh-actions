@@ -8,9 +8,9 @@ on:
         required: true
         type: choice
         options:
-          - uat_eu-api-server --> ENV:- UAT_EU, Instance_Name:- UAT EU ZPS API 0, Mode:- API
-          - uat_eu-pubsub-server --> ENV:- UAT_EU, Instance_Name:- UAT EU ZPS Pubsub 0, Mode:- Pubsub
-          - uat_eu-agenda-server --> ENV:- UAT_EU, Instance_Name:- UAT EU ZPS Jobs 0, Mode:- Agenda
+          - uat_eu-zps_api-api --> ENV:- UAT_EU, Instance_Name:- UAT EU ZPS API 0, Mode:- API
+          - uat_eu-zps_pubsub-pubsub --> ENV:- UAT_EU, Instance_Name:- UAT EU ZPS Pubsub 0, Mode:- Pubsub
+          - uat_eu-zps-agenda-agenda --> ENV:- UAT_EU, Instance_Name:- UAT EU ZPS Jobs 0, Mode:- Agenda
       deploy_mode:
         description: 'Select deployment mode'
         required: true
