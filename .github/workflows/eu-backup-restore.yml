@@ -6,7 +6,7 @@ on:
      env:
       description: "Please provide the environments to restore: uat-eu, dev-eu"
       required: true
-     dbNames:
+     dbName:
        description: "Please slecte the db to be restored"
        required: true
        type: choice
