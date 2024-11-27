@@ -135,7 +135,6 @@ jobs:
           declare -A modes_map=(
             [api]="api"
             [agenda-consumer]="agenda"
-            [data-replication]="data-replication"
             [pubsub-consumer]="pubsub"
           )
           run_script() {
