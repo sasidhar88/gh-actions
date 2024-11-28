@@ -20,6 +20,8 @@ collectionArray
 #: Printing the params recieved for the JOb
 printParams
 
+
+echo "=========================================="
 echo ${USERNAME}
 echo ${cidrblock}
 #: Printing the variables set
