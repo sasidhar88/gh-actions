@@ -22,7 +22,7 @@ printParams
 
 
 echo "Accessing github variable mongodb_user_uat-eu"
-echo ${mongodb_user_uat-eu}
+echo $mongodb_user_uat_eu
 echo "=========================================="
 echo ${!USERNAME}
 echo ${!cidrblock}
