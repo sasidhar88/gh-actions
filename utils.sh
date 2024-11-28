@@ -7,8 +7,8 @@ mongoENVConnectionStringsMap () {
     #: Defining the environments to Restore.
     mongoENVConnectionStringsMap["staging"]=""
     mongoENVConnectionStringsMap["uat"]=""
-    mongoENVConnectionStringsMap["dev"]=""
-    mongoENVConnectionStringsMap["uat-eu"]="Mongo-EU-Cluster"
+    mongoENVConnectionStringsMap["dev_eu"]=""
+    mongoENVConnectionStringsMap["uat_eu"]="Mongo-EU-Cluster"
 }
 
 #: Defining a function to validate provided environment exists.
