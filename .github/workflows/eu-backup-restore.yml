@@ -34,10 +34,10 @@ jobs:
         mongodb_pass_uat_eu: ${{ secrets.MONGO_PASS_UAT_EU }}
         mongodb_user_dev_eu: ${{ secrets.MONGO_USER_UAT_EU }}
         mongodb_pass_dev_eu: ${{ secrets.MONGO_PASS_UAT_EU }}
-        mongodb_api_pub_uat_eu: ${{ vars.MONGODB_API_PUB_UAT_EU }}
-        mongodb_api_pvt_uat_eu: ${{ vars.MONGODB_API_PVT_UAT_EU }}
-        mongodb_api_pub_dev_eu: ${{ vars.MONGODB_API_PUB_DEV_EU }}
-        mongodb_api_pvt_dev_eu: ${{ vars.MONGODB_API_PVT_DEV_EU }}
+        mongodb_api_pub_uat_eu: ${{ secrets.MONGODB_API_PUB_UAT_EU }}
+        mongodb_api_pvt_uat_eu: ${{ secrets.MONGODB_API_PVT_UAT_EU }}
+        mongodb_api_pub_dev_eu: ${{ secrets.MONGODB_API_PUB_DEV_EU }}
+        mongodb_api_pvt_dev_eu: ${{ secrets.MONGODB_API_PVT_DEV_EU }}
         cidrblock_uat_eu: ${{ vars.CIDRBLOCK_UAT_EU }}
         natgw_uat_eu: ${{ vars.NATGW_UAT_EU }}
         groupid_uat_eu: ${{ vars.GROUPID_UAT_EU }}
