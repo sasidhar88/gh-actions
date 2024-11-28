@@ -20,7 +20,8 @@ collectionArray
 #: Printing the params recieved for the JOb
 printParams
 
-
+echo ${USERNAME}
+echo ${cidrblock}
 #: Printing the variables set
 echo "${!USERNAME}"
 echo "${!PASSWORD}"
