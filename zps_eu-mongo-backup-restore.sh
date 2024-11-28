@@ -27,10 +27,10 @@ echo "=========================================="
 echo ${!USERNAME}
 echo ${!cidrblock}
 #: Printing the variables set
-# echo "${!USERNAME}"
-# echo "${!PASSWORD}"
-# echo "${!publickey}"
-# echo "${!privatekey}"
-# echo "${!cidrblock}"
-# echo "${!natgw}"
-# echo "${!groupid}"
+echo "${!USERNAME}"
+echo "${!PASSWORD}"
+echo "${!publickey}"
+echo "${!privatekey}"
+echo "${!cidrblock}"
+echo "${!natgw}"
+echo "${!groupid}"
