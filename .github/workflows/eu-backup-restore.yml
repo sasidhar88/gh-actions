@@ -4,7 +4,7 @@ on:
  workflow_dispatch:
    inputs:
      env:
-      description: "Please provide the environments to restore: uat-eu, dev-eu"
+      description: "Please provide the environments to restore: uat_eu, dev_eu"
       required: true
      dbNames:
        description: "Please slecte the db to be restored"
@@ -30,17 +30,17 @@ jobs:
         env: ${{ inputs.env }}
         dbNames: ${{ inputs.dbNames }}
         collectionsToExclude: ${{ vars.COLLECTIONSTOEXCLUDE }}
-        mongodb_user_uat-eu: ${{ secrets.MONGO_USER_UAT_EU }}
-        mongodb_pass_uat-eu: ${{ secrets.MONGO_PASS_UAT_EU }}
-        mongodb_user_dev-eu: ${{ secrets.MONGO_USER_UAT_EU }}
-        mongodb_pass_dev-eu: ${{ secrets.MONGO_PASS_UAT_EU }}
-        mongodb_api_pub_uat-eu: ${{ secrets.MONGODB_API_PUB_UAT_EU }}
-        mongodb_api_pvt_uat-eu: ${{ secrets.MONGODB_API_PVT_UAT_EU }}
-        mongodb_api_pub_dev-eu: ${{ secrets.MONGODB_API_PUB_DEV_EU }}
-        mongodb_api_pvt_dev-eu: ${{ secrets.MONGODB_API_PVT_DEV_EU }}
-        cidrblock_uat-eu: ${{ vars.CIDRBLOCK_UAT_EU }}
-        natgw_uat-eu: ${{ vars.NATGW_UAT_EU }}
-        groupid_uat-eu: ${{ vars.GROUPID_UAT_EU }}
-        cidrblock_dev-eu: ${{ vars.CIDRBLOCK_DEV_EU }}
-        natgw_dev-eu: ${{ vars.NATGW_DEV_EU }}
-        groupid_dev-eu: ${{ vars.GROUPID_DEV_EU }}
+        mongodb_user_uat_eu: ${{ secrets.MONGO_USER_UAT_EU }}
+        mongodb_pass_uat_eu: ${{ secrets.MONGO_PASS_UAT_EU }}
+        mongodb_user_dev_eu: ${{ secrets.MONGO_USER_UAT_EU }}
+        mongodb_pass_dev_eu: ${{ secrets.MONGO_PASS_UAT_EU }}
+        mongodb_api_pub_uat_eu: ${{ secrets.MONGODB_API_PUB_UAT_EU }}
+        mongodb_api_pvt_uat_eu: ${{ secrets.MONGODB_API_PVT_UAT_EU }}
+        mongodb_api_pub_dev_eu: ${{ secrets.MONGODB_API_PUB_DEV_EU }}
+        mongodb_api_pvt_dev_eu: ${{ secrets.MONGODB_API_PVT_DEV_EU }}
+        cidrblock_uat_eu: ${{ vars.CIDRBLOCK_UAT_EU }}
+        natgw_uat_eu: ${{ vars.NATGW_UAT_EU }}
+        groupid_uat_eu: ${{ vars.GROUPID_UAT_EU }}
+        cidrblock_dev_eu: ${{ vars.CIDRBLOCK_DEV_EU }}
+        natgw_dev_eu: ${{ vars.NATGW_DEV_EU }}
+        groupid_dev_eu: ${{ vars.GROUPID_DEV_EU }}
