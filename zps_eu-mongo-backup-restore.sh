@@ -19,3 +19,13 @@ collectionArray
 
 #: Printing the params recieved for the JOb
 printParams
+
+
+#: Printing the variables set
+echo "$USERNAME"
+echo "$PASSWORD"
+echo "${publickey}"
+echo "${privatekey}"
+echo "${cidrblock}"
+echo "${natgw}"
+echo "${groupid}"
