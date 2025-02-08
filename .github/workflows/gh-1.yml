@@ -1,0 +1,12 @@
+on:
+ workflow_dispatch:
+   inputs:
+     Name: 
+       description: Please enter your name
+       required: true
+jobs:
+  job-1:
+    runs-on: ubuntu
+    steps:
+      - name: First Step in First Job
+        run: echo "Hello ${{ inputs.Name }}"
